@@ -33,7 +33,11 @@ public:
 
   RC create_table(const char *table_name, int attribute_count, const AttrInfo *attributes);
 
+  RC drop_table(const char  *table_name);
+
   Table *find_table(const char *table_name) const;
+
+  bool delete_table(const char *table_name);
 
   const char *name() const;
 

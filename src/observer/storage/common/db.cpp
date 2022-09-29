@@ -85,6 +85,35 @@ Table *Db::find_table(const char *table_name) const
   return nullptr;
 }
 
+bool Db::delete_table(const char *table_name)
+{
+  if (opened_tables_.erase(table_name) != 1) {
+    return false;
+  }
+  delete opened_tables_.find(table_name)->second;
+  return true;
+}
+
+RC Db::drop_table(const char *table_name) 
+{
+  RC rc;
+  rc = sync();
+  if (rc != RC::SUCCESS) {
+    return rc;
+  }  
+  
+  auto table = find_table(table_name);
+  if (table == nullptr) {
+    return RC::SCHEMA_TABLE_NOT_EXIST;
+  }
+  table->drop(path_);
+  if (!delete_table(table_name)) {
+    LOG_ERROR("Delete table failed.");
+    return RC::GENERIC_ERROR;
+  }
+  return RC::SUCCESS;
+}
+
 RC Db::open_all_tables()
 {
   std::vector<std::string> table_meta_files;

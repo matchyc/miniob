@@ -74,8 +74,5 @@ SpacesBeforeTrailingComments: 2
 ContinuationIndentWidth: 4
 CommentPragmas:  '^lint'
 MacroBlockBegin: "
-
 END_CATCH_ERROR$"
 ...
-
-
